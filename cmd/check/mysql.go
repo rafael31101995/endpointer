@@ -1,5 +1,5 @@
 /*
-Copyright © 2020 NAME HERE vinicius.costa.92@gmail.com
+Copyright © 2020 NAME HERE vinicius.costa.92@gmail.com, rafael31101995@gmail.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package check
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"os"
 	"time"
@@ -28,10 +29,10 @@ import (
 
 var mysqlInstructions = `Check if a mysql instance is responding correctly.`
 
-// MysqlCmd comentado.
+// MysqlCmd ...
 var MysqlCmd = &cobra.Command{
 	Short:   "check mysql databases",
-	Example: "endpointer check mysql localhost --port 5432",
+	Example: "go run main.go check mysql localhost --port --user --password --database",
 	Use:     "mysql <url>",
 	Args:    cobra.ExactArgs(1),
 	Long:    mysqlInstructions,
@@ -69,7 +70,6 @@ func mysqlCheck(args []string) {
 			if err != nil {
 				panic(err.Error())
 			}
-			// ctx := context.Background()
 
 			if err := db.Ping(); err != nil {
 				log.Println(err)
@@ -87,7 +87,7 @@ func mysqlCheck(args []string) {
 		}
 		c1 <- exitCode
 	}()
-
+	fmt.Println("Passou por aqui.")
 	select {
 	case res := <-c1:
 		os.Exit(res)
